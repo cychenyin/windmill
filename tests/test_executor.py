@@ -5,9 +5,9 @@ import time
 
 import pytest
 
-from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_MISSED, EVENT_JOB_EXECUTED
-from apscheduler.executors.base import MaxInstancesReachedError
-from apscheduler.schedulers.base import BaseScheduler
+from windmill.events import EVENT_JOB_ERROR, EVENT_JOB_MISSED, EVENT_JOB_EXECUTED
+from windmill.executors.base import MaxInstancesReachedError
+from windmill.schedulers.base import BaseScheduler
 
 
 try:
@@ -26,10 +26,10 @@ def mock_scheduler(timezone):
 @pytest.fixture(params=['threadpool', 'processpool'])
 def executor(request, mock_scheduler):
     if request.param == 'threadpool':
-        from apscheduler.executors.pool import ThreadPoolExecutor
+        from windmill.executors.pool import ThreadPoolExecutor
         executor_ = ThreadPoolExecutor()
     else:
-        from apscheduler.executors.pool import ProcessPoolExecutor
+        from windmill.executors.pool import ProcessPoolExecutor
         executor_ = ProcessPoolExecutor()
 
     executor_.start(mock_scheduler, 'dummy')
@@ -114,8 +114,8 @@ def test_run_job_error(monkeypatch, executor):
 
     event = Event()
     exc_traceback = [None, None]
-    monkeypatch.setattr('apscheduler.executors.base.run_job', dummy_run_job)
-    monkeypatch.setattr('apscheduler.executors.pool.run_job', dummy_run_job)
+    monkeypatch.setattr('windmill.executors.base.run_job', dummy_run_job)
+    monkeypatch.setattr('windmill.executors.pool.run_job', dummy_run_job)
     monkeypatch.setattr(executor, '_run_job_error', run_job_error)
     executor.submit_job(FauxJob(), [])
 

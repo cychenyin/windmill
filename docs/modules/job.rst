@@ -1,7 +1,7 @@
-:mod:`apscheduler.job`
+:mod:`windmill.job`
 ======================
 
-.. automodule:: apscheduler.job
+.. automodule:: windmill.job
 
 API
 ---

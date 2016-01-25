@@ -1,12 +1,12 @@
-:mod:`apscheduler.triggers.date`
+:mod:`windmill.triggers.date`
 ================================
 
-.. automodule:: apscheduler.triggers.date
+.. automodule:: windmill.triggers.date
 
 API
 ---
 
-Trigger alias for :meth:`~apscheduler.schedulers.base.BaseScheduler.add_job`: ``date``
+Trigger alias for :meth:`~windmill.schedulers.base.BaseScheduler.add_job`: ``date``
 
 .. autoclass:: DateTrigger
     :show-inheritance:
@@ -16,7 +16,7 @@ Introduction
 ------------
 
 This is the simplest possible method of scheduling a job. It schedules a job to be executed once at the specified time.
-It is APScheduler's equivalent to the UNIX "at" command.
+It is hoi's equivalent to the UNIX "at" command.
 
 The ``run_date`` can be given either as a date/datetime object or text (in the
 `ISO 8601 <https://en.wikipedia.org/wiki/ISO_8601>`_ format).
@@ -29,7 +29,7 @@ Examples
 
     from datetime import date
 
-    from apscheduler.schedulers.blocking import BlockingScheduler
+    from windmill.schedulers.blocking import BlockingScheduler
 
 
     sched = BlockingScheduler()

@@ -1,5 +1,5 @@
 ###############################################
-Migrating from previous versions of APScheduler
+Migrating from previous versions of hoi
 ###############################################
 
 From v2.x to 3.0
@@ -11,11 +11,11 @@ Scheduler changes
 -----------------
 
 * The concept of "standalone mode" is gone. For ``standalone=True``, use
-  :class:`~apscheduler.schedulers.blocking.BlockingScheduler` instead, and for ``standalone=False``, use
-  :class:`~apscheduler.schedulers.background.BackgroundScheduler`. BackgroundScheduler matches the old default
+  :class:`~windmill.schedulers.blocking.BlockingScheduler` instead, and for ``standalone=False``, use
+  :class:`~windmill.schedulers.background.BackgroundScheduler`. BackgroundScheduler matches the old default
   semantics.
 * Job defaults (like ``misfire_grace_time`` and ``coalesce``) must now be passed in a dictionary as the
-  ``job_defaults`` option to :meth:`~apscheduler.schedulers.base.BaseScheduler.configure`. When supplying an ini-style
+  ``job_defaults`` option to :meth:`~windmill.schedulers.base.BaseScheduler.configure`. When supplying an ini-style
   configuration as the first argument, they will need a corresponding ``job_defaults.`` prefix.
 * The configuration key prefix for job stores was changed from ``jobstore.`` to ``jobstores.`` to match the dict-style
   configuration better.
@@ -26,23 +26,23 @@ Scheduler changes
   This means that the old ``threadpool`` options are no longer valid.
   See :ref:`scheduler-config` on how to configure executors.
 * The trigger-specific scheduling methods have been removed entirely from the scheduler.
-  Use the generic :meth:`~apscheduler.schedulers.base.BaseScheduler.add_job` method or the
-  :meth:`~apscheduler.schedulers.base.BaseScheduler.scheduled_job` decorator instead.
+  Use the generic :meth:`~windmill.schedulers.base.BaseScheduler.add_job` method or the
+  :meth:`~windmill.schedulers.base.BaseScheduler.scheduled_job` decorator instead.
   The signatures of these methods were changed significantly.
 * The ``shutdown_threadpool`` and ``close_jobstores`` options have been removed from the
-  :meth:`~apscheduler.schedulers.base.BaseScheduler.shutdown` method.
+  :meth:`~windmill.schedulers.base.BaseScheduler.shutdown` method.
   Executors and job stores are now always shut down on scheduler shutdown.
-* :meth:`~apscheduler.scheduler.Scheduler.unschedule_job` and :meth:`~apscheduler.scheduler.Scheduler.unschedule_func`
-  have been replaced by :meth:`~apscheduler.schedulers.base.BaseScheduler.remove_job`.
+* :meth:`~windmill.scheduler.Scheduler.unschedule_job` and :meth:`~windmill.scheduler.Scheduler.unschedule_func`
+  have been replaced by :meth:`~windmill.schedulers.base.BaseScheduler.remove_job`.
   You can also unschedule a job by using the job handle returned from
-  :meth:`~apscheduler.schedulers.base.BaseScheduler.add_job`.
+  :meth:`~windmill.schedulers.base.BaseScheduler.add_job`.
 
 Job store changes
 -----------------
 
 The job store system was completely overhauled for both efficiency and forwards compatibility.
 Unfortunately, this means that the old data is not compatible with the new job stores.
-If you need to migrate existing data from APScheduler 2.x to 3.x, contact the APScheduler author.
+If you need to migrate existing data from hoi 2.x to 3.x, contact the hoi author.
 
 The Shelve job store had to be dropped because it could not support the new job store design.
 Use SQLAlchemyJobStore with SQLite instead.
@@ -77,12 +77,12 @@ API changes
 * dump_jobs() is now print_jobs() and prints directly to the given file or
   sys.stdout if none is given
 * The ``repeat`` parameter was removed from
-  :meth:`~apscheduler.scheduler.Scheduler.add_interval_job` and
-  :meth:`~apscheduler.scheduler.Scheduler.interval_schedule` in favor of the
+  :meth:`~windmill.scheduler.Scheduler.add_interval_job` and
+  :meth:`~windmill.scheduler.Scheduler.interval_schedule` in favor of the
   universal ``max_runs`` option
-* :meth:`~apscheduler.scheduler.Scheduler.unschedule_func` now raises a
+* :meth:`~windmill.scheduler.Scheduler.unschedule_func` now raises a
   KeyError if the given function is not scheduled
-* The semantics of :meth:`~apscheduler.scheduler.Scheduler.shutdown` have
+* The semantics of :meth:`~windmill.scheduler.Scheduler.shutdown` have
   changed -- the method no longer accepts a numeric argument, but two booleans
 
 

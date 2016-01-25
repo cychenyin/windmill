@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 import pytest
 import six
 
-from apscheduler.job import Job
-from apscheduler.schedulers.base import BaseScheduler
-from apscheduler.triggers.date import DateTrigger
+from windmill.jobruntime import Job
+from windmill.schedulers.base import BaseScheduler
+from windmill.triggers.date import DateTrigger
 
 try:
     from unittest.mock import MagicMock, patch
@@ -25,7 +25,7 @@ def job(create_job):
 
 @pytest.mark.parametrize('job_id', ['testid', None])
 def test_constructor(job_id):
-    with patch('apscheduler.job.Job._modify') as _modify:
+    with patch('windmill.jobruntime.Job._modify') as _modify:
         scheduler_mock = MagicMock(BaseScheduler)
         job = Job(scheduler_mock, id=job_id)
         assert job._scheduler is scheduler_mock

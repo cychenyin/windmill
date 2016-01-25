@@ -7,9 +7,8 @@ Created on Dec 1, 2015
 import logging
 
 from datetime import date, timedelta
-#from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from logging.handlers import RotatingFileHandler
-
+from tzlocal import get_localzone
 
 class Config(object):
     
@@ -20,9 +19,9 @@ class Config(object):
     LOG_HANDLERS = [LOG_HANDLER, logging.StreamHandler() ]
 
     ADMIN = 'admin@server.com'
-    ADMIN_PHONES = '138000000'
-    ALARM_MAIL = 'admin@server.com' 
-    ALARM_PASSWD = 'abc'
+    ADMIN_PHONES = '13800000000'
+    ALARM_MAIL = 'user@serer.com' 
+    ALARM_PASSWD = 'passwd'
     
     
     DEBUG = True
@@ -30,8 +29,8 @@ class Config(object):
     THREADS_PER_PAGE = 8
     #os.urandom(24)
     SECRET_KEY = 'k^S%1*2s3W*4*d6$≈1#w@2'
-#     SCHEDULER_TIMEZONE = 'Asia/Shanghai'
-    SCHEDULER_TIMEZONE = None
+    TIMEZONE = get_localzone() 
+    TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
     PERMANENT_SESSION_LIFETIME = timedelta(minutes=20)
     
     #DATABASE_URL = 'postgres://postgres:test@localhost/nosypm'
@@ -44,6 +43,7 @@ class Config(object):
     DATABASE_URL = JOB_STORE_URL
      
     ZK_URI = '127.0.0.1:2181'
+    ZK_ROOT = '/windmill'
     ZOOKEEPER_PATH = "zk://localhost:2181/windmill"
     
     LOG_TO = "/tmp/logs"

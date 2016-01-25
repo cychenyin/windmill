@@ -1,7 +1,7 @@
-:mod:`apscheduler.jobstores.base`
+:mod:`windmill.jobstores.base`
 =================================
 
-.. automodule:: apscheduler.jobstores.base
+.. automodule:: windmill.jobstores.base
 
 API
 ---

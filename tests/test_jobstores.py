@@ -3,8 +3,8 @@ import os
 
 import pytest
 
-from apscheduler.jobstores.memory import MemoryJobStore
-from apscheduler.jobstores.base import JobLookupError, ConflictingIdError
+from windmill.jobstores.memory import MemoryJobStore
+from windmill.jobstores.base import JobLookupError, ConflictingIdError
 
 
 def dummy_job():
@@ -28,11 +28,11 @@ def memjobstore(request):
 def sqlalchemyjobstore(request):
     def finish():
         store.shutdown()
-        if os.path.exists('apscheduler_unittest.sqlite'):
-            os.remove('apscheduler_unittest.sqlite')
+        if os.path.exists('hoi_unittest.sqlite'):
+            os.remove('hoi_unittest.sqlite')
 
-    sqlalchemy = pytest.importorskip('apscheduler.jobstores.sqlalchemy')
-    store = sqlalchemy.SQLAlchemyJobStore(url='sqlite:///apscheduler_unittest.sqlite')
+    sqlalchemy = pytest.importorskip('windmill.jobstores.sqlalchemy')
+    store = sqlalchemy.SQLAlchemyJobStore(url='sqlite:///hoi_unittest.sqlite')
     request.addfinalizer(finish)
     return store
 
@@ -41,11 +41,11 @@ def sqlalchemyjobstore(request):
 def rethinkdbjobstore(request):
     def finish():
         conn = store.conn
-        rethinkdb.r.db_drop('apscheduler_unittest').run(conn)
+        rethinkdb.r.db_drop('hoi_unittest').run(conn)
         store.shutdown()
 
-    rethinkdb = pytest.importorskip('apscheduler.jobstores.rethinkdb')
-    store = rethinkdb.RethinkDBJobStore(database='apscheduler_unittest')
+    rethinkdb = pytest.importorskip('windmill.jobstores.rethinkdb')
+    store = rethinkdb.RethinkDBJobStore(database='hoi_unittest')
     request.addfinalizer(finish)
     return store
 
@@ -56,8 +56,8 @@ def mongodbjobstore(request):
         store.client.drop_database(store.collection.database.name)
         store.shutdown()
 
-    mongodb = pytest.importorskip('apscheduler.jobstores.mongodb')
-    store = mongodb.MongoDBJobStore(database='apscheduler_unittest')
+    mongodb = pytest.importorskip('windmill.jobstores.mongodb')
+    store = mongodb.MongoDBJobStore(database='hoi_unittest')
     request.addfinalizer(finish)
     return store
 
@@ -68,7 +68,7 @@ def redisjobstore(request):
         store.remove_all_jobs()
         store.shutdown()
 
-    redis = pytest.importorskip('apscheduler.jobstores.redis')
+    redis = pytest.importorskip('windmill.jobstores.redis')
     store = redis.RedisJobStore()
     request.addfinalizer(finish)
     return store
@@ -261,7 +261,7 @@ def test_repr_memjobstore(memjobstore):
 
 
 def test_repr_sqlalchemyjobstore(sqlalchemyjobstore):
-    assert repr(sqlalchemyjobstore) == '<SQLAlchemyJobStore (url=sqlite:///apscheduler_unittest.sqlite)>'
+    assert repr(sqlalchemyjobstore) == '<SQLAlchemyJobStore (url=sqlite:///hoi_unittest.sqlite)>'
 
 
 def test_repr_mongodbjobstore(mongodbjobstore):
@@ -280,7 +280,7 @@ def test_memstore_close(memjobstore, create_add_job):
 
 def test_sqlalchemy_engine_ref():
     global sqla_engine
-    sqlalchemy = pytest.importorskip('apscheduler.jobstores.sqlalchemy')
+    sqlalchemy = pytest.importorskip('windmill.jobstores.sqlalchemy')
     sqla_engine = sqlalchemy.create_engine('sqlite:///')
     try:
         sqlalchemy.SQLAlchemyJobStore(engine='%s:sqla_engine' % __name__)
@@ -290,14 +290,14 @@ def test_sqlalchemy_engine_ref():
 
 
 def test_sqlalchemy_missing_engine():
-    sqlalchemy = pytest.importorskip('apscheduler.jobstores.sqlalchemy')
+    sqlalchemy = pytest.importorskip('windmill.jobstores.sqlalchemy')
     exc = pytest.raises(ValueError, sqlalchemy.SQLAlchemyJobStore)
     assert 'Need either' in str(exc.value)
 
 
 def test_mongodb_client_ref():
     global mongodb_client
-    mongodb = pytest.importorskip('apscheduler.jobstores.mongodb')
+    mongodb = pytest.importorskip('windmill.jobstores.mongodb')
     mongodb_client = mongodb.MongoClient()
     try:
         mongodb.MongoDBJobStore(client='%s:mongodb_client' % __name__)
@@ -307,12 +307,12 @@ def test_mongodb_client_ref():
 
 
 def test_mongodb_null_database():
-    mongodb = pytest.importorskip('apscheduler.jobstores.mongodb')
+    mongodb = pytest.importorskip('windmill.jobstores.mongodb')
     exc = pytest.raises(ValueError, mongodb.MongoDBJobStore, database='')
     assert '"database"' in str(exc.value)
 
 
 def test_mongodb_null_collection():
-    mongodb = pytest.importorskip('apscheduler.jobstores.mongodb')
+    mongodb = pytest.importorskip('windmill.jobstores.mongodb')
     exc = pytest.raises(ValueError, mongodb.MongoDBJobStore, collection='')
     assert '"collection"' in str(exc.value)

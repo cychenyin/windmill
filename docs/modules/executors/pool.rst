@@ -1,7 +1,7 @@
-:mod:`apscheduler.executors.pool`
+:mod:`windmill.executors.pool`
 =================================
 
-.. automodule:: apscheduler.executors.pool
+.. automodule:: windmill.executors.pool
 
 Module Contents
 ---------------

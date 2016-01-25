@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from apscheduler.triggers.cron.fields import DayOfMonthField, BaseField, DayOfWeekField
-from apscheduler.triggers.cron.expressions import (
+from windmill.triggers.cron.fields import DayOfMonthField, BaseField, DayOfWeekField
+from windmill.triggers.cron.expressions import (
     AllExpression, RangeExpression, WeekdayPositionExpression, WeekdayRangeExpression, LastDayOfMonthExpression)
 
 

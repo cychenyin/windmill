@@ -5,7 +5,7 @@ Demonstrates how to use the blocking scheduler to schedule a job that executes o
 from datetime import datetime
 import os
 
-from apscheduler.schedulers.blocking import BlockingScheduler
+from windmill.schedulers.blocking import BlockingScheduler
 
 
 def tick():

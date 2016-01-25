@@ -6,19 +6,19 @@ from pytz import utc
 import pytest
 import six
 
-from apscheduler.dispatchers.base import BaseDispatcher, MaxInstancesReachedError
-from apscheduler.dispatchers.debug import DebugDispatcher
-from apscheduler.job import Job
-from apscheduler.jobstores.base import BaseJobStore, JobLookupError, ConflictingIdError
-from apscheduler.jobstores.memory import MemoryJobStore
-from apscheduler.schedulers import SchedulerAlreadyRunningError, SchedulerNotRunningError
-from apscheduler.schedulers.base import BaseScheduler
-from apscheduler.events import (EVENT_SCHEDULER_START, EVENT_SCHEDULER_SHUTDOWN, EVENT_JOBSTORE_ADDED,
+from windmill.dispatchers.base import BaseDispatcher, MaxInstancesReachedError
+from windmill.dispatchers.debug import DebugDispatcher
+from windmill.jobruntime import Job
+from windmill.jobstores.base import BaseJobStore, JobLookupError, ConflictingIdError
+from windmill.jobstores.memory import MemoryJobStore
+from windmill.schedulers import SchedulerAlreadyRunningError, SchedulerNotRunningError
+from windmill.schedulers.base import BaseScheduler
+from windmill.events import (EVENT_SCHEDULER_START, EVENT_SCHEDULER_SHUTDOWN, EVENT_JOBSTORE_ADDED,
                                 EVENT_JOBSTORE_REMOVED, EVENT_ALL, EVENT_ALL_JOBS_REMOVED, EVENT_EXECUTOR_ADDED,
                                 EVENT_EXECUTOR_REMOVED, EVENT_JOB_MODIFIED, EVENT_JOB_REMOVED, SchedulerEvent,
                                 EVENT_JOB_ADDED, EVENT_JOB_EXECUTED)
-from apscheduler.triggers.base import BaseTrigger
-from apscheduler.util import undefined
+from windmill.triggers.base import BaseTrigger
+from windmill.util import undefined
 
 
 try:
@@ -106,7 +106,7 @@ class DummyJobStore(BaseJobStore):
 
 @pytest.fixture
 def scheduler(monkeypatch, timezone):
-    monkeypatch.setattr('apscheduler.schedulers.base.get_localzone', MagicMock(return_value=timezone))
+    monkeypatch.setattr('windmill.schedulers.base.get_localzone', MagicMock(return_value=timezone))
     return DummyScheduler()
 
 
@@ -115,7 +115,7 @@ def logstream(request):
     stream = StringIO()
     loghandler = StreamHandler(stream)
     loghandler.setLevel(INFO)
-    logger = getLogger('apscheduler')
+    logger = getLogger('hoi')
     logger.addHandler(loghandler)
     request.addfinalizer(lambda: logger.removeHandler(loghandler))
     return stream
@@ -124,7 +124,7 @@ def logstream(request):
 class TestBaseScheduler(object):
     def test_constructor(self):
         with patch('%s.DummyScheduler.configure' % __name__) as configure:
-            gconfig = {'apscheduler.foo': 'bar', 'apscheduler.x': 'y'}
+            gconfig = {'windmill.foo': 'bar', 'windmill.x': 'y'}
             options = {'bar': 'baz', 'xyz': 123}
             DummyScheduler(gconfig, **options)
 
@@ -132,33 +132,33 @@ class TestBaseScheduler(object):
 
     @pytest.mark.parametrize('gconfig', [
         {
-            'apscheduler.timezone': 'UTC',
-            'apscheduler.job_defaults.misfire_grace_time': '5',
-            'apscheduler.job_defaults.coalesce': 'false',
-            'apscheduler.job_defaults.max_instances': '9',
-            'apscheduler.dispatchers.default.class': '%s:DummyDispatcher' % __name__,
-            'apscheduler.dispatchers.default.arg1': '3',
-            'apscheduler.dispatchers.default.arg2': 'a',
-            'apscheduler.dispatchers.alter.class': '%s:DummyDispatcher' % __name__,
-            'apscheduler.dispatchers.alter.arg': 'true',
-            'apscheduler.jobstores.default.class': '%s:DummyJobStore' % __name__,
-            'apscheduler.jobstores.default.arg1': '3',
-            'apscheduler.jobstores.default.arg2': 'a',
-            'apscheduler.jobstores.bar.class': '%s:DummyJobStore' % __name__,
-            'apscheduler.jobstores.bar.arg': 'false',
+            'windmill.timezone': 'UTC',
+            'windmill.job_defaults.misfire_grace_time': '5',
+            'windmill.job_defaults.coalesce': 'false',
+            'windmill.job_defaults.max_instances': '9',
+            'windmill.dispatchers.default.class': '%s:DummyDispatcher' % __name__,
+            'windmill.dispatchers.default.arg1': '3',
+            'windmill.dispatchers.default.arg2': 'a',
+            'windmill.dispatchers.alter.class': '%s:DummyDispatcher' % __name__,
+            'windmill.dispatchers.alter.arg': 'true',
+            'windmill.jobstores.default.class': '%s:DummyJobStore' % __name__,
+            'windmill.jobstores.default.arg1': '3',
+            'windmill.jobstores.default.arg2': 'a',
+            'windmill.jobstores.bar.class': '%s:DummyJobStore' % __name__,
+            'windmill.jobstores.bar.arg': 'false',
         },
         {
-            'apscheduler.timezone': 'UTC',
-            'apscheduler.job_defaults': {
+            'windmill.timezone': 'UTC',
+            'windmill.job_defaults': {
                 'misfire_grace_time': '5',
                 'coalesce': 'false',
                 'max_instances': '9',
             },
-            'apscheduler.dispatchers': {
+            'windmill.dispatchers': {
                 'default': {'class': '%s:DummyDispatcher' % __name__, 'arg1': '3', 'arg2': 'a'},
                 'alter': {'class': '%s:DummyDispatcher' % __name__, 'arg': 'true'}
             },
-            'apscheduler.jobstores': {
+            'windmill.jobstores': {
                 'default': {'class': '%s:DummyJobStore' % __name__, 'arg1': '3', 'arg2': 'a'},
                 'bar': {'class': '%s:DummyJobStore' % __name__, 'arg': 'false'}
             }
@@ -898,7 +898,7 @@ class SchedulerImplementationTestBase(object):
 class TestBlockingScheduler(SchedulerImplementationTestBase):
     @pytest.fixture
     def scheduler(self):
-        from apscheduler.schedulers.blocking import BlockingScheduler
+        from windmill.schedulers.blocking import BlockingScheduler
         return BlockingScheduler()
 
     @pytest.fixture
@@ -936,19 +936,19 @@ class TestBlockingScheduler(SchedulerImplementationTestBase):
 class TestBackgroundScheduler(SchedulerImplementationTestBase):
     @pytest.fixture
     def scheduler(self):
-        from apscheduler.schedulers.background import BackgroundScheduler
+        from windmill.schedulers.background import BackgroundScheduler
         return BackgroundScheduler()
 
 
 class TestAsyncIOScheduler(SchedulerImplementationTestBase):
     @pytest.fixture
     def event_loop(self):
-        asyncio = pytest.importorskip('apscheduler.schedulers.asyncio')
+        asyncio = pytest.importorskip('windmill.schedulers.asyncio')
         return asyncio.asyncio.new_event_loop()
 
     @pytest.fixture
     def scheduler(self, event_loop):
-        asyncio = pytest.importorskip('apscheduler.schedulers.asyncio')
+        asyncio = pytest.importorskip('windmill.schedulers.asyncio')
         return asyncio.AsyncIOScheduler(event_loop=event_loop)
 
     @pytest.fixture
@@ -968,7 +968,7 @@ class TestAsyncIOScheduler(SchedulerImplementationTestBase):
 class TestGeventScheduler(SchedulerImplementationTestBase):
     @pytest.fixture
     def scheduler(self):
-        gevent = pytest.importorskip('apscheduler.schedulers.gevent')
+        gevent = pytest.importorskip('windmill.schedulers.gevent')
         return gevent.GeventScheduler()
 
     @pytest.fixture
@@ -992,7 +992,7 @@ class TestTornadoScheduler(SchedulerImplementationTestBase):
 
     @pytest.fixture
     def scheduler(self, io_loop):
-        tornado = pytest.importorskip('apscheduler.schedulers.tornado')
+        tornado = pytest.importorskip('windmill.schedulers.tornado')
         return tornado.TornadoScheduler(io_loop=io_loop)
 
     @pytest.fixture
@@ -1017,7 +1017,7 @@ class TestTwistedScheduler(SchedulerImplementationTestBase):
 
     @pytest.fixture
     def scheduler(self, reactor):
-        twisted = pytest.importorskip('apscheduler.schedulers.twisted')
+        twisted = pytest.importorskip('windmill.schedulers.twisted')
         return twisted.TwistedScheduler(reactor=reactor)
 
     @pytest.fixture
@@ -1043,7 +1043,7 @@ class TestQtScheduler(SchedulerImplementationTestBase):
 
     @pytest.fixture
     def scheduler(self, coreapp):
-        qt = pytest.importorskip('apscheduler.schedulers.qt')
+        qt = pytest.importorskip('windmill.schedulers.qt')
         return qt.QtScheduler()
 
     def wait_event(self, queue):

@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 import pytest
 import pytz
 
-from apscheduler.triggers.cron import CronTrigger
-from apscheduler.triggers.date import DateTrigger
-from apscheduler.triggers.interval import IntervalTrigger
+from windmill.triggers.cron import CronTrigger
+from windmill.triggers.date import DateTrigger
+from windmill.triggers.interval import IntervalTrigger
 
 
 class TestCronTrigger(object):

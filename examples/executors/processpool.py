@@ -5,7 +5,7 @@ Demonstrates how to schedule a job to be run in a process pool on 3 second inter
 from datetime import datetime
 import os
 
-from apscheduler.schedulers.blocking import BlockingScheduler
+from windmill.schedulers.blocking import BlockingScheduler
 
 
 def tick():

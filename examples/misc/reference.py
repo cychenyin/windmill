@@ -4,7 +4,7 @@ Basic example showing how to schedule a callable using a textual reference.
 
 import os
 
-from apscheduler.schedulers.blocking import BlockingScheduler
+from windmill.schedulers.blocking import BlockingScheduler
 
 
 if __name__ == '__main__':

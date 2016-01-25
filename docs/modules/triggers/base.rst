@@ -1,7 +1,7 @@
-:mod:`apscheduler.triggers.base`
+:mod:`windmill.triggers.base`
 ================================
 
-.. automodule:: apscheduler.triggers.base
+.. automodule:: windmill.triggers.base
 
 API
 ---

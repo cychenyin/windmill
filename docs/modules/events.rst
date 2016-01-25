@@ -1,7 +1,7 @@
-:mod:`apscheduler.events`
+:mod:`windmill.events`
 ============================
 
-.. automodule:: apscheduler.events
+.. automodule:: windmill.events
 
 API
 ---
@@ -21,7 +21,7 @@ API
 Event codes
 -----------
 
-The following event codes are numeric constants importable from :mod:`apscheduler.events`.
+The following event codes are numeric constants importable from :mod:`windmill.events`.
 
 .. list-table::
   :header-rows: 1

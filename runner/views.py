@@ -13,8 +13,8 @@ from flask import Flask
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask import current_app, request, Response
 from flask.views import View
-from apscheduler.jobstores.base import ConflictingIdError, JobLookupError
-from apscheduler.schedulers import SchedulerAlreadyRunningError, SchedulerNotRunningError
+from windmill.stores.base import ConflictingIdError, JobLookupError
+from windmill.schedulers import SchedulerAlreadyRunningError, SchedulerNotRunningError
 from collections import OrderedDict
 #from cmdjob import CmdJob
 #from application import app
@@ -75,14 +75,6 @@ def tick():
         print str(e)
 
 def cmdfunc():        
-#     job = CmdJob()
-#     job.command_line ='date +%s'
-#     job.name = "test1"
-#     job.retry_strategy = 2
-#     job.stdout_match_reg = 'error'
-#     job.restore_strategy = 1
-#     job.status = 0
-#     result = runcmd(job.command_line)    
     result = runcmd('date +%s; echo ------------------------------------------')
     print result
     return result
@@ -95,15 +87,15 @@ def runcmd(cmd):
 def add_job():
     """Adds a new job."""
     try:
-        from apscheduler.jobconf import JobConf
+        from windmill.jobconf import JobConf
         conf = JobConf()
         conf.id = 1
         conf.cmd = 'date +%s; echo ----------------------------------------'
         conf.name = 'job1'
         conf.status = 1
-        #from apscheduler.triggers.interval import IntervalTrigger 
+        #from windmill.triggers.interval import IntervalTrigger 
 #         current_app.swrapper.scheduler.add_job(cmdfunc, 'interval', seconds=100, id='tick1', name='tick1 x', replace_existing=True, conf=conf)
-        from apscheduler.triggers.cron import CronTrigger
+        from windmill.triggers.cron import CronTrigger
         trigger = CronTrigger(second='*/5')
         current_app.swrapper.scheduler.add_job(cmdfunc, trigger, second=5, id=conf.id, name=conf.name, replace_existing=True, conf=conf, jobstore=current_app.swrapper.jobstore_alias)
 #         data = request.get_json(force=True)

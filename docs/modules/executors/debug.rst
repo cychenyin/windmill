@@ -1,7 +1,7 @@
-:mod:`apscheduler.executors.debug`
+:mod:`windmill.executors.debug`
 ==================================
 
-.. automodule:: apscheduler.executors.debug
+.. automodule:: windmill.executors.debug
 
 Module Contents
 ---------------

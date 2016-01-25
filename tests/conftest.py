@@ -5,9 +5,9 @@ import sys
 import pytest
 import pytz
 
-from apscheduler.job import Job
-from apscheduler.schedulers.base import BaseScheduler
-from apscheduler.schedulers.blocking import BlockingScheduler
+from windmill.jobruntime import Job
+from windmill.schedulers.base import BaseScheduler
+from windmill.schedulers.blocking import BlockingScheduler
 
 
 try:
@@ -63,10 +63,10 @@ def freeze_time(monkeypatch, timezone):
 
     freezer = TimeFreezer(timezone.localize(datetime(2011, 4, 3, 18, 40)))
     fake_datetime = Mock(datetime, now=freezer.get)
-    monkeypatch.setattr('apscheduler.schedulers.base.datetime', fake_datetime)
-    monkeypatch.setattr('apscheduler.dispatchers.base.datetime', fake_datetime)
-    monkeypatch.setattr('apscheduler.triggers.interval.datetime', fake_datetime)
-    monkeypatch.setattr('apscheduler.triggers.date.datetime', fake_datetime)
+    monkeypatch.setattr('windmill.schedulers.base.datetime', fake_datetime)
+    monkeypatch.setattr('windmill.dispatchers.base.datetime', fake_datetime)
+    monkeypatch.setattr('windmill.triggers.interval.datetime', fake_datetime)
+    monkeypatch.setattr('windmill.triggers.date.datetime', fake_datetime)
     return freezer
 
 

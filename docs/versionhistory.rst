@@ -2,7 +2,7 @@ Version history
 ===============
 
 To find out how to migrate your application from a previous version of
-APScheduler, see the :doc:`migration section <migration>`.
+hoi, see the :doc:`migration section <migration>`.
 
 3.1.0
 -----
@@ -159,7 +159,7 @@ APScheduler, see the :doc:`migration section <migration>`.
 * All triggers now accept dates in string form (YYYY-mm-dd HH:MM:SS)
 
 * Jobs are now run in a thread pool; you can either supply your own PEP 3148
-  compliant thread pool or let APScheduler create its own
+  compliant thread pool or let hoi create its own
 
 * Maximum run count can be configured for all jobs, not just those using
   interval-based scheduling

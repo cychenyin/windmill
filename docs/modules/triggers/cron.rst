@@ -1,12 +1,12 @@
-:mod:`apscheduler.triggers.cron`
+:mod:`windmill.triggers.cron`
 ================================
 
-.. automodule:: apscheduler.triggers.cron
+.. automodule:: windmill.triggers.cron
 
 API
 ---
 
-Trigger alias for :meth:`~apscheduler.schedulers.base.BaseScheduler.add_job`: ``cron``
+Trigger alias for :meth:`~windmill.schedulers.base.BaseScheduler.add_job`: ``cron``
 
 .. autoclass:: CronTrigger
     :show-inheritance:
@@ -15,7 +15,7 @@ Trigger alias for :meth:`~apscheduler.schedulers.base.BaseScheduler.add_job`: ``
 Introduction
 ------------
 
-This is the most powerful of the built-in triggers in APScheduler. You can specify a variety of different expressions
+This is the most powerful of the built-in triggers in windmill. You can specify a variety of different expressions
 on each field, and when determining the next execution time, it finds the earliest possible time that satisfies the
 conditions in every field. This behavior resembles the "Cron" utility found in most UNIX-like operating systems.
 
@@ -30,7 +30,7 @@ explicitly defined field default to ``*`` while lesser fields default to their m
 on the first day of every month on every year at 20 minutes of every hour. The code examples below should further
 illustrate this behavior.
 
-.. note:: The behavior for omitted fields was changed in APScheduler 2.0.
+.. note:: The behavior for omitted fields was changed in hoi 2.0.
           Omitted fields previously always defaulted to ``*``.
 
 
@@ -78,7 +78,7 @@ Examples
 
 ::
 
-    from apscheduler.schedulers.blocking import BlockingScheduler
+    from windmill.schedulers.blocking import BlockingScheduler
 
 
     def job_function():
@@ -99,7 +99,7 @@ You can use ``start_date`` and ``end_date`` to limit the total time in which the
     sched.add_job(job_function, 'cron', day_of_week='mon-fri', hour=5, minute=30, end_date='2014-05-30')
 
 
-The :meth:`~apscheduler.schedulers.base.BaseScheduler.scheduled_job` decorator works nicely too::
+The :meth:`~windmill.schedulers.base.BaseScheduler.scheduled_job` decorator works nicely too::
 
     @sched.scheduled_job('cron', id='my_job_id', day='last sun')
     def some_decorated_task():

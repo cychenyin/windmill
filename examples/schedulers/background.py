@@ -6,7 +6,7 @@ from datetime import datetime
 import time
 import os
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from windmill.schedulers.background import BackgroundScheduler
 
 
 def tick():

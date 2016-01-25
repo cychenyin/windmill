@@ -7,7 +7,7 @@ import pytz
 import six
 import sys
 
-from apscheduler.util import (
+from windmill.util import (
     asint, asbool, astimezone, convert_to_datetime, datetime_to_utc_timestamp, utc_timestamp_to_datetime,
     timedelta_seconds, datetime_ceil, get_callable_name, obj_to_ref, ref_to_obj, maybe_ref, check_callable_args,
     datetime_repr, repr_escape)
@@ -236,7 +236,7 @@ class TestCheckCallableArgs(object):
     @pytest.fixture(params=[True, False], ids=['signature', 'getargspec'])
     def use_signature(self, request, monkeypatch):
         if not request.param:
-            monkeypatch.setattr('apscheduler.util.signature', None)
+            monkeypatch.setattr('windmill.util.signature', None)
 
     def test_invalid_callable_args(self, use_signature):
         """Tests that attempting to create a job with an invalid number of arguments raises an exception."""

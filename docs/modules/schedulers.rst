@@ -1,5 +1,5 @@
-:mod:`apscheduler.schedulers`
+:mod:`windmill.schedulers`
 =============================
 
-.. automodule:: apscheduler.schedulers
+.. automodule:: windmill.schedulers
    :members:

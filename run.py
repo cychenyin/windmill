@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from runner.application import create_app
+#from runner.application import create_app
+from runner import create_app
     #from runner.views import *
 
 def main():

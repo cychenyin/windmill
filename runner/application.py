@@ -6,7 +6,7 @@ Created on Dec 1, 2015
 
 dependencies: Jinja2-2.8 MarkupSafe-0.23 Werkzeug-0.11.2 flask-0.10.1 
     itsdangerous-0.24 
-    Apscheduler 3.0.4 
+    hoi 3.0.4 
     python-dateutil==2.4.2
     
 inspired by  https://github.com/imwilsonxu/fbone/tree/master/fbone
@@ -16,18 +16,16 @@ inspired by  https://github.com/imwilsonxu/fbone/tree/master/fbone
 import logging, json, socket
 from flask import Flask
 from flask import render_template, Response
-from logging import Formatter
-from logging.handlers import RotatingFileHandler
-from wrapper import SchedulerWrapper as SchedulerWrapper
+from runner.skeleton import WindmillAssembly
 from config import Config as Config
 from encodings import utf_8
 from array import array
 from cgitb import handler
 
-def config_app(app, config=None):    
+def config_app(app, conf=None):    
     app.config.from_object(Config())
-    if config:
-        app.config.from_object(config)
+    if conf:
+        app.config.from_object(conf)
         
     app.debug = app.config.get('DEBUG')
     app.secret_key = app.config.get('SECRET_KEY')
@@ -51,7 +49,7 @@ def config_logging(app, config=None):
                 logger.addHandler(handler)
                 logger.setLevel(level)
         
-    logger_names = ['windmill', 'apscheduler.jobstores', 'apscheduler.jobstores.default', 'apscheduler.scheduler', 'apscheduler.executors', 'apscheduler.executors.default' ]
+    logger_names = ['windmill', 'windmill.stores', 'windmill.stores.default', 'windmill.scheduler', 'windmill.executors', 'windmill.executors.default' ]
     loggers = [ logging.root ] + [logging.getLogger(name) for name in logger_names]
     inner_init(loggers)
     
@@ -70,16 +68,14 @@ def config_extensions(app):
     pass
 
 def config_scheduler(app):
-    swrapper = SchedulerWrapper(app=app)
-    app.scheduler = swrapper.scheduler
-    app.swrapper = swrapper
-    app.swrapper.start()
+    wm = WindmillAssembly(app=app, conf=Config())
+    app.scheduler = wm.scheduler
+    app.windmill = wm
+    app.windmill.start()
     logging.warn('config_scheduler executed')
     
 def config_error_handlers(app):
     def _jsonify(message, code, status=500):
-        import json
-        from flask import Response
         return Response(json.dumps({'code': code, 'message': message }, indent=2), status=status, mimetype='application/json')
     
     @app.errorhandler(403)

@@ -1,12 +1,12 @@
-:mod:`apscheduler.triggers.interval`
+:mod:`windmill.triggers.interval`
 ====================================
 
-.. automodule:: apscheduler.triggers.interval
+.. automodule:: windmill.triggers.interval
 
 API
 ---
 
-Trigger alias for :meth:`~apscheduler.schedulers.base.BaseScheduler.add_job`: ``interval``
+Trigger alias for :meth:`~windmill.schedulers.base.BaseScheduler.add_job`: ``interval``
 
 .. autoclass:: IntervalTrigger
     :show-inheritance:
@@ -32,7 +32,7 @@ Examples
 
     from datetime import datetime
 
-    from apscheduler.schedulers.blocking import BlockingScheduler
+    from windmill.schedulers.blocking import BlockingScheduler
 
 
     def job_function():
@@ -52,9 +52,9 @@ You can use ``start_date`` and ``end_date`` to limit the total time in which the
     sched.add_job(job_function, 'interval', hours=2, start_date='2010-10-10 09:30:00', end_date='2014-06-15 11:00:00)
 
 
-The :meth:`~apscheduler.schedulers.base.BaseScheduler.scheduled_job` decorator works nicely too::
+The :meth:`~windmill.schedulers.base.BaseScheduler.scheduled_job` decorator works nicely too::
 
-    from apscheduler.scheduler import BlockingScheduler
+    from windmill.scheduler import BlockingScheduler
 
     @sched.scheduled_job('interval', id='my_job_id', hours=2)
     def job_function():

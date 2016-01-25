@@ -1,7 +1,7 @@
-:mod:`apscheduler.schedulers.base`
+:mod:`windmill.schedulers.base`
 ==================================
 
-.. automodule:: apscheduler.schedulers.base
+.. automodule:: windmill.schedulers.base
 
 API
 ---

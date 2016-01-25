@@ -19,6 +19,6 @@ execfile(activate_this, dict(__file__=activate_this))
 if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
-# give wsgi the "application"
+# give aaaaaaaa wsgi the "application"
 from fbone import create_app
 application = create_app()

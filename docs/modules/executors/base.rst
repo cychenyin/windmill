@@ -1,7 +1,7 @@
-:mod:`apscheduler.executors.base`
+:mod:`windmill.executors.base`
 =================================
 
-.. automodule:: apscheduler.executors.base
+.. automodule:: windmill.executors.base
 
 Module Contents
 ---------------
