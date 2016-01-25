@@ -1,0 +1,14 @@
+.project
+.pydevproject
+.idea/
+docs/_build/
+*.egg-info/
+*.pyc
+dist/
+.tox/
+build/
+.coverage
+.cache/
+example.sqlite
+*.bak
+*.sqlite3
